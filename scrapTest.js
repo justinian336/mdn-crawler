@@ -7,6 +7,17 @@ var spanish = [];
 var newLink = [];
 var routes = ['https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript'];
 
+var editLink = function(link){
+    if(link.indexOf("https://developer.mozilla.org")!=-1){
+        newLink=link;
+    }
+    else {
+        newLink = "https://developer.mozilla.org"+link;
+    }
+    return newLink;
+};
+
+
 var j = 0;
 var scrape = function(routesArr){
     // Reset the languages array.
@@ -33,12 +44,7 @@ var scrape = function(routesArr){
                     links.each(function(i,link){
                         if($(link).attr('href')!=undefined){
                             if($(link).attr('href').indexOf("/en-US/docs")!=-1){
-                                if($(link).attr('href').indexOf("https://developer.mozilla.org")!=-1){
-                                    newLink=$(link).attr('href');
-                                }
-                                else {
-                                    newLink = "https://developer.mozilla.org"+$(link).attr('href');
-                                }
+                                newLink = editLink($(link).attr('href'));
                                 if(routes.indexOf(newLink)==-1){
                                     //console.log(newLink);
                                     routes.push(newLink);
