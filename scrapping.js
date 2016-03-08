@@ -5,13 +5,23 @@ var cheerio = require('cheerio');
 var languages = [];
 var spanish = [];
 var newLink = [];
-var routes = ['https://developer.mozilla.org/en/docs/Web/JavaScript'];
+var routes = [{enUrl:'https://developer.mozilla.org/en/docs/Web/JavaScript'}];
+
+var editLink = function(link){
+    if(link.indexOf("https://developer.mozilla.org")!=-1){
+        newLink=link;
+    }
+    else {
+        newLink = "https://developer.mozilla.org"+link;
+    }
+    return newLink;
+};
 
 var j = 0;
 var scrape = function(routesArr){
     // Reset the languages array.
     languages = [];
-    request(routesArr[j], function(error, response, html){
+    request(routesArr[j].enUrl, function(error, response, html){
     
         if(!error){
             
@@ -26,32 +36,18 @@ var scrape = function(routesArr){
                     languages.push(data.children().eq(i).text());
                 }
                 
-                //UNDER CONSTRUCTION: Verify if there is a Spanish translation. If there is, scrape the route in Spanish 
-                //and find out if there is a message indicating that the translation is incomplete. 
-                //This needs to be done in the ES route. Obtain route for ES ver first.
-                $(this).filter(function(){
-                     var statusMessage =$('.translationInProgress').children().first().text();
-                     if(statusMessage.indexOf("incompleta")!=-1){
-                         spanish.push({route:routesArr[i],spanish:languages.indexOf('Español')!=-1});
-                     }
-                     
-                 });
-                
                 //Populate the routes array with the <a> tags found in the article.
                 $(this).filter(function(){
                     var links = $('#wikiArticle a');
                     links.each(function(i,link){
                         if($(link).attr('href')!=undefined){
                             if($(link).attr('href').indexOf("/en-US/docs")!=-1){
-                                if($(link).attr('href').indexOf("https://developer.mozilla.org")!=-1){
-                                    newLink=$(link).attr('href');
-                                }
-                                else {
-                                    newLink = "https://developer.mozilla.org"+$(link).attr('href');
-                                }
-                                if(routes.indexOf(newLink)==-1){
+                                
+                                newLink = editLink($(link).attr('href'));
+                                
+                                if(routes.indexOf({enUrl:newLink})==-1){
                                     //console.log(newLink);
-                                    routes.push(newLink);
+                                    routes.push({enUrl:newLink});
                                 }
                             }
                         }
@@ -65,7 +61,7 @@ var scrape = function(routesArr){
                     return;
                 }
                 else{
-                    console.log(routes[j]);
+                    console.log(routes[j].enUrl);
                     scrape(routes);
                 }
             });
