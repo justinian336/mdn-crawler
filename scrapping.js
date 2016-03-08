@@ -5,7 +5,7 @@ var cheerio = require('cheerio');
 var languages = [];
 var spanish = [];
 var newLink = [];
-var routes = [{enUrl:'https://developer.mozilla.org/en/docs/Web/JavaScript'}];
+var routes = [{enUrl:'https://developer.mozilla.org/en/docs/Web/JavaScript',esUrl:""}];
 
 var editLink = function(link){
     if(link.indexOf("https://developer.mozilla.org")!=-1){
@@ -45,9 +45,9 @@ var scrape = function(routesArr){
                                 
                                 newLink = editLink($(link).attr('href'));
                                 
-                                if(routes.indexOf({enUrl:newLink})==-1){
+                                if(routes.indexOf({enUrl:newLink,esUrl:""})==-1){
                                     //console.log(newLink);
-                                    routes.push({enUrl:newLink});
+                                    routes.push({enUrl:newLink,esUrl:""});
                                 }
                             }
                         }
