@@ -9,10 +9,12 @@ mdnCrawl.js works in three steps:
 2. **Stage 2** takes the array outputted by **stage 1** and, for each element, verifies whether a route for a given language's version (Spanish by default) of the current route exists among the `<a>` tags in the `#translations` element, appending the `esUrl` property to the corresponding route in the array (empty string if the translation in the desired language doesn't exist).
 3. Finally, **Stage 3** runs through the urls array again, scraping the urls in the `esUrl` property of each element and verifying the existence of an element with the class `.translationInProgress` for each url. It appends an `esMessage` property to each element including the corresponding text in the element `.translationInProgress`, which is usually employed to leave notes about incomplete translations. jsonfile.js is employed to create a `.json` file containing the data in the array with the url in English and another language, as well as notes for translators for each of the routes in the MDN Documentation. The resulting `.json` file can be used for analytics and to evaluate the state of the translation of the MDN Documentation.
 
+A delay of 10 seconds was introduced between requests to prevent overloading the servers. You can change this parameter to make the process faster or more gentle to the server.
+
+**Caution!** Screen Scraping can have an impact on the website's performance if too many requests are made in a short period of time. We're here to help, not to break the thing. Use it responsibly.
+
 To run it, clone the repository, install all the dependencies, run `mdnCrawl.js`and get yourself a coffee.
 
 See `routes.json` for an example of an output file.
 
 Feel free to clone it, improve it and notify any issue you find.
-
-**Caution!** Screen Scraping can have an impact on the website's performance if too many requests are made in a short period of time. We're here to help, not to break the thing. Use it responsibly.
