@@ -1,7 +1,7 @@
 {
-  "name": "node-web-scrape",
+  "name": "mdn-crawler",
   "version": "0.0.1",
-  "description": "Scrape le web.",
+  "description": "An assistant for MDN Documentation translators.",
   "main": "server.js",
   "author": "Scotch",
   "dependencies": {
@@ -9,5 +9,25 @@
     "express": "latest",
     "jsonfile": "^2.2.3",
     "request": "latest"
-  }
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justinian336/mdn-crawler.git"
+  },
+  "keywords": [
+    "MDN",
+    "Data",
+    "Scraping",
+    "cheerio.js",
+    "translation"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/justinian336/mdn-crawler/issues"
+  },
+  "homepage": "https://github.com/justinian336/mdn-crawler#readme"
 }
