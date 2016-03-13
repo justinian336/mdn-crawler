@@ -6,6 +6,8 @@ var cheerio = require('cheerio');
 var fileName ='routes.json';
 var routes = ['https://developer.mozilla.org/en/docs/Web/JavaScript'];
 var topicRoutes = ['Web/JavaScript'];
+//Introduce a delay between requests because we don't want to DOS anyone. 
+var delayTime = 10000;
 
 var editLink = function(link){
     var newLink;
@@ -40,33 +42,37 @@ var stage3 = function(routesArr){
             routesArr[j3].esMessage = message.children().first().text();
             console.log(routesArr[j3].esMessage);
             j3++;
-                
-            if(j3==routes.length){
+            
+            setTimeout(function(){
+                if(j3==routes.length){
                 jsonfile.writeFile(fileName, routesArr, function(err){
                     if(!err){
                         console.log('Done! See '+fileName);
                     }
                 });
                 return;
-            }
-            else{
-                stage3(routesArr);
-            }
+                }
+                else{
+                    stage3(routesArr);
+                }
+            },delayTime);    
         }
         else{
             console.log("No Spanish Route");
             j3++;
-            if(j3==routes.length){
+            setTimeout(function(){
+                if(j3==routes.length){
                 jsonfile.writeFile(fileName, routesArr, function(err){
                     if(!err){
                         console.log('Done! See '+fileName);
                     }
                 });
                 return;
-            }
-            else{
-                stage3(routesArr);
-            }
+                }
+                else{
+                    stage3(routesArr);
+                }
+            },delayTime);
         }
     });
 };
@@ -92,15 +98,15 @@ var stage2 = function(routesArr){
             });
             //console.log(langRoutes);
             j2++;
-            
-            if(j2==routes.length){
-                console.log('Moving to stage 3');
-                stage3(routesArr);
-            }
-            else{
-                //console.log(j2);
-                stage2(routesArr);
-            }
+            setTimeout(function(){
+                if(j2==routes.length){
+                    console.log('Moving to stage 3');
+                    stage3(routesArr);
+                }
+                else{
+                    stage2(routesArr);
+                }
+            },delayTime);
         }
     });
 };
@@ -115,7 +121,7 @@ var stage1 = function(routesArr){
             var links = $('#wikiArticle a');
             links.each(function(i,link){
                 if($(link).attr('href')!=undefined){
-                    if($(link).attr('href').indexOf("/en-US/docs/"+topicRoutes)!=-1){
+                    if($(link).attr('href').indexOf("/en-US/docs/"+topicRoutes)!=-1&&$(link).attr('href').indexOf("#")==-1){
                         var newLink = editLink(unleak($(link).attr('href')));
                         if(routesArr.indexOf(newLink)==-1){
                             console.log(newLink);
@@ -126,16 +132,19 @@ var stage1 = function(routesArr){
             });
             j1++;
             
+            setTimeout(function(){
             if(j1==routesArr.length-1){
-                for(var i=0;i<routesArr.length;i++){
-                    routes[i] = {enUrl:routes[i],esUrl:"",esMessage:""};
-                }
-                console.log('Moving to stage 2');
-                stage2(routesArr);
+            for(var i=0;i<routesArr.length;i++){
+                routes[i] = {enUrl:routes[i],esUrl:"",esMessage:""};
+            }
+            console.log('Moving to stage 2');
+            stage2(routesArr);
             }
             else{
                 stage1(routesArr);
             }
+            },delayTime);
+            
         }
     });
 };
