@@ -15,4 +15,4 @@ See `routes.json` for an example of an output file.
 
 Feel free to clone it, improve it and notify any issue you find.
 
-Cheers!
+**Caution!** Screen Scraping can have an impact on the website's performance if too many requests are made in a short period of time. We're here to help, not to break the thing. Use it responsibly.
